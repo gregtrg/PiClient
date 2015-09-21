@@ -13,9 +13,9 @@ public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
     private final Connection connection ;
 
     @Override
-    public ProceedDataObject getProceedDataObject() throws SQLException{
+    public DataObject getProceedDataObject() throws SQLException{
         String query = "SELECT ... ";
-        ProceedDataObject c = new ProceedDataObject();
+        DataObject c = new DataObject();
         try(PreparedStatement stmn = connection.prepareStatement(query)) {
             ResultSet rs = stmn.executeQuery();
             while(rs.next()) {
