@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class PostgreDaoFactory implements IDaoFactory {
     private String user = "root"; //Логин пользователя
     private String password = ""; //Пароль пользователя
-    private String url = "jdbc:mysql://localhost:3306/daotalk"; //URL адрес
+    private String url = "jdbc:mysql://localhost:3306/DBuri"; //URL адрес
     private String driver = "com.mysql.jdbc.Driver";//Имя драйвера
 
     public Connection getConnection() throws SQLException {
@@ -18,8 +18,8 @@ public class PostgreDaoFactory implements IDaoFactory {
     }
 
     @Override
-    public IDaoCounter getCounterDao(Connection connection) {
-        return new PostgreCounterDao(connection);
+    public IDaoProceedDataObject getProceedDataObjectDao(Connection connection) {
+        return new PostgreProceedDataObjectDao(connection);
     }
 
     public PostgreDaoFactory() {
