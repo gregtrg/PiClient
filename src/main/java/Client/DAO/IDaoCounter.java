@@ -7,5 +7,5 @@ import java.sql.SQLException;
  */
 public interface IDaoCounter {
     /** Возвращает необходимую для синхронизации информацию*/
-    Counter getSynchronizationInformation() throws SQLException;
+    Counte getSynchronizationInformation() throws SQLException;
 }

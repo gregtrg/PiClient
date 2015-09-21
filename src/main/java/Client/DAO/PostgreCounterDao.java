@@ -1,6 +1,5 @@
 package Client.DAO;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +13,9 @@ public class PostgreCounterDao implements IDaoCounter {
     private final Connection connection ;
 
     @Override
-    public Counter getSynchronizationInformation() throws SQLException{
+    public Counte getSynchronizationInformation() throws SQLException{
         String query = "SELECT ... ";
-        Counter c = new Counter();
+        Counte c = new Counte();
         try(PreparedStatement stmn = connection.prepareStatement(query)) {
             ResultSet rs = stmn.executeQuery();
             rs.next();
