@@ -1,6 +1,6 @@
 package Sender;
 
-import Client.DAO.DataObject;
+import Client.DAO.ProceedDataObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,9 +10,9 @@ import org.json.simple.parser.ParseException;
  */
 public class JsonPreparer {
 
-    DataObject dataObject;
+    ProceedDataObject dataObject;
 
-    public JsonPreparer(DataObject dataObject) {
+    public JsonPreparer(ProceedDataObject dataObject) {
         this.dataObject = dataObject;
     }
 

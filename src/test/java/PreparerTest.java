@@ -1,4 +1,4 @@
-import Client.DAO.DataObject;
+import Client.DAO.ProceedDataObject;
 import Sender.JsonPreparer;
 import junit.framework.Assert;
 import org.json.simple.parser.JSONParser;
@@ -11,7 +11,7 @@ import org.junit.Test;
  */
 
 public class PreparerTest {
-    private DataObject dataObject = new DataObject();
+    private ProceedDataObject dataObject = new ProceedDataObject();
 
     @Before
     public void prepareDataObject() {

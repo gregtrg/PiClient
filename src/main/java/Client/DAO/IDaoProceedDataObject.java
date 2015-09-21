@@ -7,5 +7,5 @@ import java.sql.SQLException;
  */
 public interface IDaoProceedDataObject {
     /** Возвращает объект, содержащий информацию для PI */
-    DataObject getProceedDataObject() throws SQLException;
+    ProceedDataObject getProceedDataObject() throws SQLException;
 }
