@@ -1,24 +1,47 @@
-package Client.DAO;
+package Client.postgresql;
+
+import Client.DAO.IDaoProceedDataObject;
+import Client.DAO.PersistException;
+import Client.domain.ProceedDataObject;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Рабочий on 17.09.2015.
- */
+
 public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
 
     private final Connection connection ;
 
+
     @Override
-    public ProceedDataObject getProceedDataObject() throws SQLException{
-        String query = "SELECT ... ";
-        ProceedDataObject c = new ProceedDataObject();
+    public ProceedDataObject getProceedDataObject() throws PersistException {
+        String query = getSelectedQuery();
+        ProceedDataObject c;
+        LogManager.getLogger("ClientPI").info("Preparing information for sending..");
+
         try(PreparedStatement stmn = connection.prepareStatement(query)) {
             ResultSet rs = stmn.executeQuery();
-            while(rs.next()) {
+            c = parseResultSet(rs);
+        }catch (SQLException e) {
+            LogManager.getLogger("ClientPI").error("Preparing have not completed");
+            throw new PersistException(e);
+        }
+        return c;
+    }
+
+    @Override
+    public String getSelectedQuery() {
+        return "SELECT ...";
+    }
+
+    @Override
+    public ProceedDataObject parseResultSet(ResultSet rs) throws PersistException {
+        ProceedDataObject c = new ProceedDataObject();
+        try {
+            while (rs.next()) {
                 StringBuilder row = new StringBuilder();
                 row.append("\"id\": ");
                 row.append("\"" + rs.getObject("sync_id") + "\"");
@@ -39,13 +62,16 @@ public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
                 if (rs.getObject("volume_flow_m3_per_h") != null) {
                     c.add("{" + row.toString() + ", \"parameter\": \"DFH\", \"value\": \"" + rs.getObject("volume_flow_m3_per_h") + "\"}");
                 }
+                rs.close();
             }
-            rs.close();
-            stmn.close();
+        } catch (SQLException ex) {
+            LogManager.getLogger("ClientPI").error("Preparing have not completed");
+            throw new PersistException(ex);
         }
-        return c;
+        return  c;
     }
-    PostgreProceedDataObjectDao(Connection connection) {
+
+    public PostgreProceedDataObjectDao(Connection connection) {
         this.connection = connection;
     }
 }

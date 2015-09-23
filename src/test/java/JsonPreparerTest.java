@@ -1,20 +1,16 @@
-import Client.DAO.ProceedDataObject;
-import Sender.JsonPreparer;
+import Client.domain.ProceedDataObject;
+import Client.JSON.JsonPreparer;
 import junit.framework.Assert;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by Рабочий on 21.09.2015.
- */
-
-public class PreparerTest {
+public class JsonPreparerTest {
     private ProceedDataObject dataObject = new ProceedDataObject();
 
     @Before
-    public void prepareDataObject() {
+    public void setUp() {
         StringBuilder row = new StringBuilder();
         row.append("\"id\": ");
         row.append(1);

@@ -1,6 +1,6 @@
-package Sender;
+package Client.JSON;
 
-import Client.DAO.ProceedDataObject;
+import Client.domain.ProceedDataObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

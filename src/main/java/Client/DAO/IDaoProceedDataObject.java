@@ -1,11 +1,19 @@
 package Client.DAO;
 
-import java.sql.SQLException;
+import Client.domain.ProceedDataObject;
+
+import java.sql.ResultSet;
+
 
 /**
- * Created by Рабочий on 17.09.2015.
+ * Класс DAO для ProceedDataObject
+ * @author Grigorii Moiseev
  */
 public interface IDaoProceedDataObject {
     /** Возвращает объект, содержащий информацию для PI */
-    ProceedDataObject getProceedDataObject() throws SQLException;
+    public ProceedDataObject getProceedDataObject() throws PersistException;
+    /** Возвращает запрос на выборку */
+    public String getSelectedQuery();
+    /** Возвращает объект ProceedDataObject содержащий инфомацию */
+    public ProceedDataObject parseResultSet(ResultSet rs) throws PersistException;
 }

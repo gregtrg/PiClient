@@ -1,20 +1,30 @@
-package Client.DAO;
+package Client.postgresql;
+
+import Client.DAO.IDaoFactory;
+import Client.DAO.IDaoProceedDataObject;
+import Client.DAO.PersistException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Created by Рабочий on 17.09.2015.
+ * Реализация DAO для PostgreSQL
  */
 public class PostgreDaoFactory implements IDaoFactory {
     private String user = "root"; //Логин пользователя
     private String password = ""; //Пароль пользователя
     private String url = "jdbc:mysql://localhost:3306/DBuri"; //URL адрес
-    private String driver = "com.mysql.jdbc.Driver";//Имя драйвера
+    private String driver = "org.postgresql.Driver";//Имя драйвера
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+    public Connection getConnection() throws PersistException {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            throw new PersistException(e);
+        }
+        return connection;
     }
 
     @Override
@@ -24,7 +34,7 @@ public class PostgreDaoFactory implements IDaoFactory {
 
     public PostgreDaoFactory() {
         try {
-            Class.forName(driver);//Регистрируем драйвер
+            Class.forName(driver); //Регистрируем драйвер
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
