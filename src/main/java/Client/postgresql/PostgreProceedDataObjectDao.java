@@ -45,7 +45,12 @@ public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
 
     @Override
     public String getSelectedQuery() {
-        return "SELECT CD.sync_id, CD.data_id, CD.place_code, CD.serial_number, CD.sync_pi_send_flow_per_h, (to_char(CD.created_datetime_rounded, 'YYYY-MM-DD') || 'T' || to_char(CD.created_datetime_rounded, 'HH24:MI') || ':00') AS created_datetime, CD.pressure_bar, CD.pressure_mwc, CD.volume_m3, CD.volume_acc_m3, CD.volume_flow_m3_per_h, CD.sync_try_count_max FROM \"CounterData_PISync\" AS CD LIMIT 2";
+        return "SELECT CD.sync_id, CD.data_id, CD.place_code, CD.serial_number, CD.sync_pi_send_flow_per_h, " +
+                "(to_char(CD.created_datetime_rounded, 'YYYY-MM-DD') || 'T' || to_char(CD.created_datetime_rounded, 'HH24:MI')" +
+                " || ':00') AS created_datetime, CD.pressure_bar, CD.pressure_mwc, CD.volume_m3, CD.volume_acc_m3, " +
+                "CD.volume_flow_m3_per_h, CD.sync_try_count_max FROM \"CounterData_PISync\" AS CD " +
+                "WHERE CD.sync_state=0 " +
+                "ORDER BY CD.data_id LIMIT 1000";
     }
 
     @Override

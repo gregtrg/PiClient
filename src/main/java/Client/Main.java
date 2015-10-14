@@ -35,8 +35,8 @@ public class Main {
             log.info("Start.");
             JsonPreparer parser = new JsonPreparer(dao.getProceedDataObject());
             System.out.println(parser.javaToJSON());
-            WriterPiService k  = new WriterPiService();
-
+            //WriterPiService k  = new WriterPiService();
+            //Нужно заслать данные parser.javaToJSON() сервису WriterPiService()
             log.info("Done.");
 
         } catch (PersistException ex) {
