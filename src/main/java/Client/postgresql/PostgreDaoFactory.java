@@ -1,20 +1,24 @@
 package Client.postgresql;
 
+import Client.DAO.ErrorsTypes;
 import Client.DAO.IDaoFactory;
 import Client.DAO.IDaoProceedDataObject;
 import Client.DAO.PersistException;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 /**
  * Реализация DAO для PostgreSQL
  */
+@Component
 public class PostgreDaoFactory implements IDaoFactory {
-    private String user = "root"; //Логин пользователя
+    private String user = "postgres"; //Логин пользователя
     private String password = ""; //Пароль пользователя
-    private String url = "jdbc:mysql://localhost:3306/DBuri"; //URL адрес
+    private String url = "jdbc:postgresql://localhost:2223/WaterMeterCounterAnalysis"; //URL адрес
     private String driver = "org.postgresql.Driver";//Имя драйвера
 
     public Connection getConnection() throws PersistException {
@@ -22,7 +26,7 @@ public class PostgreDaoFactory implements IDaoFactory {
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            throw new PersistException(e);
+            throw new PersistException(ErrorsTypes.CONNECTION.toString() + e);
         }
         return connection;
     }
@@ -34,7 +38,7 @@ public class PostgreDaoFactory implements IDaoFactory {
 
     public PostgreDaoFactory() {
         try {
-            Class.forName(driver); //Регистрируем драйвер
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

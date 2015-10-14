@@ -19,7 +19,7 @@ public class ProceedDataObject {
 
     /**
      * Получить строку с информацией из очереди
-     * @return строка с нформацией
+     * @return строка с информацией
      */
     public String get() {
         return rows.getFirst();

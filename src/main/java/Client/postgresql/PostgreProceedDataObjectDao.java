@@ -1,16 +1,19 @@
 package Client.postgresql;
 
+import Client.DAO.ErrorsTypes;
 import Client.DAO.IDaoProceedDataObject;
 import Client.DAO.PersistException;
 import Client.domain.ProceedDataObject;
 import org.apache.logging.log4j.LogManager;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Repository
 public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
 
     private final Connection connection ;
@@ -28,13 +31,21 @@ public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
         }catch (SQLException e) {
             LogManager.getLogger("ClientPI").error("Preparing have not completed");
             throw new PersistException(e);
+        } finally {
+            if(connection!=null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return c;
     }
 
     @Override
     public String getSelectedQuery() {
-        return "SELECT ...";
+        return "SELECT CD.sync_id, CD.data_id, CD.place_code, CD.serial_number, CD.sync_pi_send_flow_per_h, (to_char(CD.created_datetime_rounded, 'YYYY-MM-DD') || 'T' || to_char(CD.created_datetime_rounded, 'HH24:MI') || ':00') AS created_datetime, CD.pressure_bar, CD.pressure_mwc, CD.volume_m3, CD.volume_acc_m3, CD.volume_flow_m3_per_h, CD.sync_try_count_max FROM \"CounterData_PISync\" AS CD LIMIT 2";
     }
 
     @Override
@@ -62,11 +73,18 @@ public class PostgreProceedDataObjectDao implements IDaoProceedDataObject {
                 if (rs.getObject("volume_flow_m3_per_h") != null) {
                     c.add("{" + row.toString() + ", \"parameter\": \"DFH\", \"value\": \"" + rs.getObject("volume_flow_m3_per_h") + "\"}");
                 }
-                rs.close();
             }
         } catch (SQLException ex) {
             LogManager.getLogger("ClientPI").error("Preparing have not completed");
-            throw new PersistException(ex);
+            throw new PersistException(ErrorsTypes.PREPARING.toString() + ex);
+        } finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    throw new PersistException(ErrorsTypes.CLOSEING.toString() + ex);
+                }
+            }
         }
         return  c;
     }
